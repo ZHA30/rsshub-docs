@@ -25,6 +25,7 @@ const telegramLogo = `
 export const shared = defineConfig({
   title: 'RSSHub',
   description: 'Everything is RSSible 🧡',
+  base: '/rsshub-docs/',
   srcDir: 'src',
   vite: {
     plugins: [

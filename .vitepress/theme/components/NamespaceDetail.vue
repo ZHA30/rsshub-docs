@@ -222,7 +222,8 @@ function formatHeat(heat: number) {
 
 function handleImageError(e: Event) {
   const img = e.target as HTMLImageElement;
-  img.src = '/logo.png';
+  const base = site.value.base || '/';
+  img.src = `${base}logo.png`;
 }
 
 function renderMarkdown(content: string) {

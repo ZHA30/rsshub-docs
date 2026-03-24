@@ -296,7 +296,9 @@ const visibleNamespaces = computed(() => {
 });
 
 function getNamespaceLink(id: string) {
-  return `${localePath.value}/routes/${id}`;
+  const base = site.value.base || '/';
+  const localizedPath = localePath.value ? `${localePath.value}/routes/${id}` : `/routes/${id}`;
+  return `${base.replace(/\/$/, '')}${localizedPath}`;
 }
 
 function getLocalizedName(ns: NamespaceData) {
@@ -315,7 +317,8 @@ function formatHeat(heat: number) {
 
 function handleImageError(e: Event) {
   const img = e.target as HTMLImageElement;
-  img.src = '/logo.png';
+  const base = site.value.base || '/';
+  img.src = `${base}logo.png`;
 }
 </script>
 

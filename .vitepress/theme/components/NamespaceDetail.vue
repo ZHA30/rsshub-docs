@@ -57,7 +57,7 @@
 
 <script setup lang="ts">
 import MarkdownIt from 'markdown-it';
-import { useRoute } from 'vitepress';
+import { useData, useRoute } from 'vitepress';
 import { ref, computed, onMounted, watch } from 'vue';
 
 import { useLocale } from '../composables/useLocale';
@@ -116,6 +116,7 @@ const props = defineProps<{
 }>();
 
 const { t, locale, localized } = useLocale();
+const { site } = useData();
 const vpRoute = useRoute();
 
 // Get namespace from props or URL path
@@ -149,7 +150,11 @@ watch(currentNamespaceId, async () => {
 async function loadData() {
   loading.value = true;
   try {
-    const [routesRes, categoriesRes] = await Promise.all([fetch('/routes.json'), fetch('/categories.json')]);
+    const base = site.value.base || '/';
+    const [routesRes, categoriesRes] = await Promise.all([
+      fetch(`${base}routes.json`),
+      fetch(`${base}categories.json`),
+    ]);
     routesData.value = await routesRes.json();
     categories.value = await categoriesRes.json();
     updateNamespace();

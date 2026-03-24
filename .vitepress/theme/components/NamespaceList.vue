@@ -80,6 +80,7 @@
 </template>
 
 <script setup lang="ts">
+import { useData } from 'vitepress';
 import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue';
 
 import { useLocale } from '../composables/useLocale';
@@ -126,6 +127,7 @@ interface Category {
 }
 
 const { t, locale, localePath, localized } = useLocale();
+const { site } = useData();
 
 const BATCH_SIZE = 60;
 
@@ -192,7 +194,11 @@ onBeforeUnmount(() => {
 
 onMounted(async () => {
   try {
-    const [routesRes, categoriesRes] = await Promise.all([fetch('/routes.json'), fetch('/categories.json')]);
+    const base = site.value.base || '/';
+    const [routesRes, categoriesRes] = await Promise.all([
+      fetch(`${base}routes.json`),
+      fetch(`${base}categories.json`),
+    ]);
     const routesData = await routesRes.json();
     const categoriesData = await categoriesRes.json();
 
